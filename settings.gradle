@@ -1,0 +1,3 @@
+rootProject.name='TicTacDoh'
+include ':app', ':license'
+//project(':license').projectDir = new File('license')

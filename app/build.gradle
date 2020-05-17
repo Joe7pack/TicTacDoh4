@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+        storeFile file('C:\\Users\\Joe\\Documents\\WillyShmo\\KeyStore\\KeyStore.jks')
+            storePassword 'pushkey609'
+            keyAlias = 'pushkey609'
+            keyPassword 'pushkey609'
+        }
+    }
+    compileSdkVersion 28
+    //buildToolsVersion "28-rc2"
+    dexOptions {
+        //incremental = true;
+        preDexLibraries = false
+        //   javaMaxHeapSize "4g"
+    }
+    defaultConfig {
+        applicationId "com.guzzardo.android.willyshmo.tictactoe4"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 5
+        versionName "1.1"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            versionNameSuffix '05.03'
+            signingConfig signingConfigs.config
+        }
+    }
+    //buildToolsVersion '28.0.3'
+    dexOptions {
+        //incremental true
+        javaMaxHeapSize "4g"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-ads:19.1.0'
+    implementation "com.google.android.material:material:1.1.0"
+    implementation 'com.google.firebase:firebase-core:17.4.1'
+    implementation 'com.google.firebase:firebase-appindexing:19.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    //won't build without it but get redundant jar error at runtime.
+    implementation 'androidx.fragment:fragment:1.2.4'
+    implementation 'androidx.core:core:1.2.0'
+    implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
+    implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.media:media:1.1.0'
+    implementation 'androidx.browser:browser:1.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation files('libs/rabbitmq-client.jar')
+    implementation files('libs/jackson-annotations-2.11.0.jar')
+    implementation files('libs/jackson-core-2.11.0.jar')
+    implementation files('libs/jackson-databind-2.11.0.jar')
+    implementation project(':license')
+
+    //implementation 'com.android.support:design:28.0.0'
+
+
+}
+
+apply plugin: 'com.google.gms.google-services'
