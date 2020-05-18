@@ -164,6 +164,8 @@ public class MainActivity extends Activity implements ToastMessage { //--, Conne
         mChecker.onDestroy();
     }
 
+
+    /*
     public void stopUpdatesButtonHandler(View view) {
         System.out.println("stop updates button handler");
     }
@@ -171,6 +173,7 @@ public class MainActivity extends Activity implements ToastMessage { //--, Conne
     public void startUpdatesButtonHandler(View view) {
         System.out.println("start updates button handler");
     }
+    */
 
     // Acquire a reference to the system Location Manager
     public interface UserPreferences {

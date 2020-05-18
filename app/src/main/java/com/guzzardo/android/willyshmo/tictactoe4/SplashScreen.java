@@ -2,6 +2,7 @@ package com.guzzardo.android.willyshmo.tictactoe4;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -27,6 +28,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import androidx.appcompat.app.AlertDialog;
+
+import static com.guzzardo.android.willyshmo.tictactoe4.WillyShmoApplication.getWillyShmoApplicationContext;
 
 public class SplashScreen extends Activity implements ToastMessage {
     protected boolean mActive = true;
@@ -110,8 +113,16 @@ public class SplashScreen extends Activity implements ToastMessage {
             //mSkipWaitCheck = true;
         }
 
-//        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.sound_file_1);
-//        mp.start();
+        Context willyShmoApplicationContext = getWillyShmoApplicationContext();
+        Intent myIntent = new Intent(willyShmoApplicationContext, FusedLocationActivity.class);
+        startActivity(myIntent);
+
+
+        //Intent myIntent = new Intent(willyShmoApplicationContext, MainActivity.class);
+        //startActivity(myIntent);
+        //finish();
+
+
 
         pgsBar = (ProgressBar) findViewById(R.id.pBar);
 
@@ -125,7 +136,7 @@ public class SplashScreen extends Activity implements ToastMessage {
             }
         });
 
-        startMyThread();
+        //startMyThread();
     }
 
     public void startMyThread() {
@@ -184,7 +195,7 @@ public class SplashScreen extends Activity implements ToastMessage {
         */
 
 
-        new LoadPrizesTask().execute(SplashScreen.this, getApplicationContext(), getResources());
+        //new LoadPrizesTask().execute(SplashScreen.this, getApplicationContext(), getResources());
     }
 
     @Override

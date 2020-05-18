@@ -53,7 +53,7 @@ public class GetConfigurationValuesFromDB extends AsyncTask<Object, Void, String
                 WillyShmoApplication.setConfigMap(key, value);
             }
 
-            mCallerActivity.setAsyncMessage();
+            //mCallerActivity.setAsyncMessage();
 
         } catch (Exception e) {
             e.printStackTrace();

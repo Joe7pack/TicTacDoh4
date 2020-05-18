@@ -79,7 +79,7 @@ public class FusedLocationActivity  extends AppCompatActivity {
         /**
          * The desired interval for location updates. Inexact. Updates may be more or less frequent.
          */
-        private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+        private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000000;
 
         /**
          * The fastest rate for active location updates. Exact. Updates will never be more frequent
@@ -151,8 +151,8 @@ public class FusedLocationActivity  extends AppCompatActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.fused_location_activity);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
+            //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            //setSupportActionBar(toolbar);
 
             // Locate the UI widgets.
             mStartUpdatesButton = (Button) findViewById(R.id.start_updates_button);
@@ -354,7 +354,6 @@ public class FusedLocationActivity  extends AppCompatActivity {
                                     Toast.makeText(FusedLocationActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                                     mRequestingLocationUpdates = false;
                             }
-
                             updateUI();
                         }
                     });
@@ -437,7 +436,6 @@ public class FusedLocationActivity  extends AppCompatActivity {
         @Override
         protected void onPause() {
             super.onPause();
-
             // Remove location updates to save battery.
             stopLocationUpdates();
         }
