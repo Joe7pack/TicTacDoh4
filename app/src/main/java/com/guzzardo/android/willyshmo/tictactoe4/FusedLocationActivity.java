@@ -1,6 +1,9 @@
 package com.guzzardo.android.willyshmo.tictactoe4;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.Manifest;
@@ -11,7 +14,9 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
 //import android.support.annotation.NonNull;
 //import android.support.design.widget.Snackbar;
@@ -41,15 +46,16 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
+
+import org.xml.sax.ErrorHandler;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 
-public class FusedLocationActivity  extends AppCompatActivity {
+public class FusedLocationActivity  extends Activity implements ToastMessage {
     /**
      * Using location settings.
      * <p/>
@@ -147,9 +153,16 @@ public class FusedLocationActivity  extends AppCompatActivity {
          */
         private String mLastUpdateTime;
 
+        private double myLatitude, myLongitude;
+
+        public static ErrorHandler mErrorHandler;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            setContentView(R.layout.splash);
+            /*
             setContentView(R.layout.fused_location_activity);
             //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             //setSupportActionBar(toolbar);
@@ -160,6 +173,7 @@ public class FusedLocationActivity  extends AppCompatActivity {
             mLatitudeTextView = (TextView) findViewById(R.id.latitude_text);
             mLongitudeTextView = (TextView) findViewById(R.id.longitude_text);
             mLastUpdateTimeTextView = (TextView) findViewById(R.id.last_update_time_text);
+            */
 
             // Set labels.
             mLatitudeLabel = getResources().getString(R.string.latitude_label);
@@ -177,9 +191,10 @@ public class FusedLocationActivity  extends AppCompatActivity {
 
             // Kick off the process of building the LocationCallback, LocationRequest, and
             // LocationSettingsRequest objects.
-            createLocationCallback();
+            //createLocationCallback();
             createLocationRequest();
             buildLocationSettingsRequest();
+            mErrorHandler = new ErrorHandler();
         }
 
         /**
@@ -208,7 +223,7 @@ public class FusedLocationActivity  extends AppCompatActivity {
                 if (savedInstanceState.keySet().contains(KEY_LAST_UPDATED_TIME_STRING)) {
                     mLastUpdateTime = savedInstanceState.getString(KEY_LAST_UPDATED_TIME_STRING);
                 }
-                updateUI();
+               // updateUI();
             }
         }
 
@@ -243,7 +258,7 @@ public class FusedLocationActivity  extends AppCompatActivity {
 
         /**
          * Creates a callback for receiving location events.
-         */
+
         private void createLocationCallback() {
             mLocationCallback = new LocationCallback() {
                 @Override
@@ -252,10 +267,11 @@ public class FusedLocationActivity  extends AppCompatActivity {
 
                     mCurrentLocation = locationResult.getLastLocation();
                     mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-                    updateLocationUI();
+                    //updateLocationUI();
                 }
             };
         }
+         */
 
         /**
          * Uses a {@link com.google.android.gms.location.LocationSettingsRequest.Builder} to build
@@ -282,7 +298,7 @@ public class FusedLocationActivity  extends AppCompatActivity {
                         case Activity.RESULT_CANCELED:
                             Log.i(TAG, "User chose not to make required location settings changes.");
                             mRequestingLocationUpdates = false;
-                            updateUI();
+                            //updateUI();
                             break;
                     }
                     break;
@@ -322,12 +338,19 @@ public class FusedLocationActivity  extends AppCompatActivity {
                         @Override
                         public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                             Log.i(TAG, "All location settings are satisfied.");
-
                             //noinspection MissingPermission
                             mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                     mLocationCallback, Looper.myLooper());
-
-                            updateUI();
+                            /*
+                            mFusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                                if (location != null) {
+                                    //wayLatitude = location.getLatitude();
+                                    //wayLongitude = location.getLongitude();
+                                    //txtLocation.setText(String.format(Locale.US, "%s -- %s", wayLatitude, wayLongitude));
+                                }
+                            });
+                            */
+                           // updateUI();
                         }
                     })
                     .addOnFailureListener(this, new OnFailureListener() {
@@ -354,18 +377,19 @@ public class FusedLocationActivity  extends AppCompatActivity {
                                     Toast.makeText(FusedLocationActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                                     mRequestingLocationUpdates = false;
                             }
-                            updateUI();
+                            //updateUI();
                         }
                     });
         }
 
         /**
          * Updates all UI fields.
-         */
+
         private void updateUI() {
             setButtonsEnabledState();
             updateLocationUI();
         }
+         */
 
         /**
          * Disables both buttons when functionality is disabled due to insuffucient location settings.
@@ -424,13 +448,31 @@ public class FusedLocationActivity  extends AppCompatActivity {
             super.onResume();
             // Within {@code onPause()}, we remove location updates. Here, we resume receiving
             // location updates if the user has requested them.
+            /*
             if (mRequestingLocationUpdates && checkPermissions()) {
                 startLocationUpdates();
             } else if (!checkPermissions()) {
                 requestPermissions();
             }
+            */
+            //startLocationUpdates();
 
-            updateUI();
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                if (location != null) {
+                    myLatitude = location.getLatitude();
+                    myLongitude = location.getLongitude();
+                    System.out.println("My latitude: "+ myLatitude + " my Longitude: " + myLongitude);
+                    WillyShmoApplication.setLatitude(myLatitude);
+                    WillyShmoApplication.setLongitude(myLongitude);
+
+                    GetPrizeListTask getPrizeListTask = new GetPrizeListTask();
+                    getPrizeListTask.execute(this, getResources(), "true");
+
+                }
+            });
+            //updateUI();
+
+
         }
 
         @Override
@@ -471,14 +513,14 @@ public class FusedLocationActivity  extends AppCompatActivity {
          */
         private boolean checkPermissions() {
             int permissionState = ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION);
+                    Manifest.permission.ACCESS_COARSE_LOCATION);
             return permissionState == PackageManager.PERMISSION_GRANTED;
         }
 
         private void requestPermissions() {
             boolean shouldProvideRationale =
                     ActivityCompat.shouldShowRequestPermissionRationale(this,
-                            Manifest.permission.ACCESS_FINE_LOCATION);
+                            Manifest.permission.ACCESS_COARSE_LOCATION);
 
             // Provide an additional rationale to the user. This would happen if the user denied the
             // request previously, but didn't check the "Don't ask again" checkbox.
@@ -490,7 +532,7 @@ public class FusedLocationActivity  extends AppCompatActivity {
                             public void onClick(View view) {
                                 // Request permission
                                 ActivityCompat.requestPermissions(FusedLocationActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                                         REQUEST_PERMISSIONS_REQUEST_CODE);
                             }
                         });
@@ -500,7 +542,8 @@ public class FusedLocationActivity  extends AppCompatActivity {
                 // sets the permission in a given state or the user denied the permission
                 // previously and checked "Never ask again".
                 ActivityCompat.requestPermissions(FusedLocationActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        //new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         REQUEST_PERMISSIONS_REQUEST_CODE);
             }
         }
@@ -551,5 +594,20 @@ public class FusedLocationActivity  extends AppCompatActivity {
                 }
             }
         }
+
+    private class ErrorHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_LONG).show();
+        }
     }
+
+    public void sendToastMessage(String message) {
+        Message msg = mErrorHandler.obtainMessage();
+        msg.obj = message;
+        mErrorHandler.sendMessage(msg);
+    }
+}
+
 

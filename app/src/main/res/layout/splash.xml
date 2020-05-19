@@ -2,15 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="bottom|left"
+    android:gravity="top|left"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textView"
-        android:gravity="top|left"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dip"
+        android:gravity="top|left"
         android:shadowColor="@android:color/background_dark"
         android:shadowDx="2.0"
         android:shadowDy="2.0"
@@ -18,6 +17,8 @@
         android:text="@string/splash_screen"
         android:textColor="@android:color/primary_text_dark"
         android:textSize="25sp" />
+
+    <!--
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -50,6 +51,6 @@
         android:text="Start Progress"
         android:layout_below="@+id/textView"/>
 
-
+    -->
 
 </RelativeLayout>

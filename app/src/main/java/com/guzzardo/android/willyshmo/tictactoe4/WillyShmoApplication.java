@@ -28,8 +28,8 @@ import androidx.multidex.MultiDexApplication;
 //import com.google.android.gms.location.LocationClient;
 
 
-public class WillyShmoApplication extends MultiDexApplication implements ConnectionCallbacks,
-	OnConnectionFailedListener, LocationListener {
+public class WillyShmoApplication extends MultiDexApplication /* implements ConnectionCallbacks,
+	OnConnectionFailedListener, LocationListener */ {
 	
 //    private static String [] mPrizeImages;
     private static String [] mPrizeNames;  
@@ -156,7 +156,9 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
 
     // Acquire a reference to the system Location Manager
     // Define a listener that responds to location updates
-	
+
+
+	/*
 	public static LocationListener getLocationListener() {
 
         writeToLog("WillyShmoApplication", "getLocationListener() called at: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
@@ -166,8 +168,8 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
 		writeToLog("WillyShmoApplication", "getLocationListener() returned at: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 		return mLocationListener;	
 	}
-	
-	
+	*/
+
 	public static void setCallerActivity(ToastMessage activity) {
 		mCallerActivity = activity;
 	}
@@ -181,7 +183,7 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
         mStartMainActivity = startMainActivity;
     }
 
-	
+	/*
     @Override
     public void onConnected(Bundle dataBundle) {
     	// mCallerActivity.sendToastMessage("Connected to Google Play");
@@ -211,7 +213,9 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
     		writeToLog("WillyShmoApplication", "onConnected error: " + e.getMessage());
     	}
     }
+    */
 
+	/*
 	@Override
 	public void onConnectionSuspended(int cause) {
 		// The connection has been interrupted.
@@ -222,7 +226,7 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
     /*
      * Called by Location Services if the attempt to
      * Location Services fails.
-     */
+
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         /*
@@ -230,7 +234,7 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
          * If the error has a resolution, try sending an Intent to
          * start a Google Play services activity that can resolve
          * error.
-         */
+
         if (connectionResult.hasResolution()) {
             try {
                 // Start an Activity that tries to resolve the error
@@ -239,7 +243,7 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
                 /*
                  * Thrown if Google Play services canceled the original
                  * PendingIntent
-                 */
+
             } catch (IntentSender.SendIntentException e) {
                 // Log the error
                 //e.printStackTrace();
@@ -249,11 +253,12 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
             /*
              * If no resolution is available, display a dialog to the
              * user with the error.
-             */
+
         	//FIXME - add showErrorDialog
             //showErrorDialog(connectionResult.getErrorCode());
         }
-    } 
+    }
+    */
     
     /*
      * Called by Location Services if the connection to the
@@ -264,9 +269,11 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
     	//mCallerActivity.sendToastMessage("Disconnected from Google Play. Please re-connect.");
     }
      */
-    
+
+    /*
 	private static void setLocationListener() {
 		mLocationListener = new LocationListener() {
+
 			public void onLocationChanged(Location location) {
                 writeToLog("WillyShmoApplication", "onLocationChanged() called at: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 				// Called when a new location is found by the network location provider.
@@ -300,7 +307,8 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
 
 		};
 	}
-	
+	*/
+
     private static void writeToLog(String filter, String msg) {
     	if ("true".equalsIgnoreCase(mResources.getString(R.string.debug))) {
     		Log.d(filter, msg);
@@ -335,6 +343,7 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
 		WillyShmoApplication.mPrizeLocations = prizeLocations;
 	}
 
+	/*
 	@Override
 	public void onStatusChanged(String status, int value, Bundle bundle) {
 		writeToLog("WillyShmoApplication", "onStatusChanged called status: " + status);
@@ -354,6 +363,7 @@ public class WillyShmoApplication extends MultiDexApplication implements Connect
 	public void onLocationChanged(Location location) {
 		writeToLog("WillyShmoApplication", "onLocationChanged called, new location latitude: " + location.getLatitude() + " longitude: " + location.getLongitude());
 	}
+    */
 
     static public void setGoogleApiClient(GoogleApiClient googleApiClient) {
         mGoogleApiClient = googleApiClient;

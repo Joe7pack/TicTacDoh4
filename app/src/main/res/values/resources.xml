@@ -32,12 +32,12 @@
     </style>
 
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="AppTheme.AppBarOverlay" parent="Theme.AppCompat.Light">
         <item name="android:textColorPrimary">#334455</item>
         <item name="android:textColorSecondary">#778899</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="AppTheme.PopupOverlay" parent="Theme.AppCompat.Light">
         <item name="android:textColorPrimary">#009922</item>
         <item name="android:textColorSecondary">#AABBCC</item>
     </style>

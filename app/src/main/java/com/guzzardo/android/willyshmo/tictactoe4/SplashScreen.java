@@ -122,7 +122,7 @@ public class SplashScreen extends Activity implements ToastMessage {
         //startActivity(myIntent);
         //finish();
 
-
+        /*
 
         pgsBar = (ProgressBar) findViewById(R.id.pBar);
 
@@ -135,7 +135,7 @@ public class SplashScreen extends Activity implements ToastMessage {
                // handleButtonClick(v);
             }
         });
-
+        */
         //startMyThread();
     }
 
@@ -272,7 +272,7 @@ public class SplashScreen extends Activity implements ToastMessage {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        handlerThread.quit();
+        //handlerThread.quit();
     }
 
 }

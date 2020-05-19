@@ -79,7 +79,9 @@
 
     <activity
         android:name="com.guzzardo.android.willyshmo.tictactoe4.FusedLocationActivity"
-        android:parentActivityName=".SplashScreen">
+        android:parentActivityName=".SplashScreen"
+        android:screenOrientation="landscape"
+        android:theme="@style/WillyTheme" >
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".SplashScreen" />

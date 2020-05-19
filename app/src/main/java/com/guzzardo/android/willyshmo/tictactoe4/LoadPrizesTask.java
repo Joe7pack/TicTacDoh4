@@ -147,7 +147,7 @@ public class LoadPrizesTask extends AsyncTask<Object, Void, Integer> implements 
         // Register the listener with the Location Manager to receive location updates
     	try {
     		LocationManager locationManager = (LocationManager) mCallerActivity.getSystemService(Context.LOCATION_SERVICE);
-    		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, WillyShmoApplication.getLocationListener());
+    		//locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, WillyShmoApplication.getLocationListener());
 //    		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     	} catch (SecurityException e) {
     		writeToLog("LoadPrizesTask", "onConnected error: " + e.getMessage());
