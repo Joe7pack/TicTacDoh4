@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     
 	<!-- these elements need to be changed before going to production -->
-	<string name="about_1" translatable="false">Willy Shmo\'s Tic Tac Toe Version 1.105.03</string>
+	<string name="about_1" translatable="false">Willy Shmo\'s Tic Tac Toe Version 1.105.08</string>
     <string name="about_2" translatable="false">Copyright © 1986&#8211;2020 &#8211; Tom Volpert and
 		Joe Guzzardo. All rights reserved.</string>
 

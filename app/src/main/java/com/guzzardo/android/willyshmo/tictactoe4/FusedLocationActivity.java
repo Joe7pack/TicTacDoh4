@@ -1,5 +1,7 @@
 package com.guzzardo.android.willyshmo.tictactoe4;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.LocationAvailability;
@@ -8,12 +10,14 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -158,6 +162,9 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
 
         public static ErrorHandler mErrorHandler;
 
+        private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 454;
+        private boolean isPermitted = false;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -196,6 +203,16 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
             createLocationRequest();
             buildLocationSettingsRequest();
             mErrorHandler = new ErrorHandler();
+
+            //checkRunTimePermission();
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkPermissions();
+            } else {
+                getLocation();
+            }
+
         }
 
         /**
@@ -227,6 +244,73 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
                // updateUI();
             }
         }
+
+    private void checkRunTimePermission() {
+        String[] permissionArrays = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION};
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(permissionArrays, 11111);
+        } else {
+            // if already permition granted
+            // PUT YOUR ACTION (Like Open cemara etc..)
+        }
+    }
+
+    /*
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean openActivityOnce = true;
+        boolean openDialogOnce = true;
+        if (requestCode == 11111) {
+            for (int i = 0; i < grantResults.length; i++) {
+                String permission = permissions[i];
+
+                isPermitted = grantResults[i] == PackageManager.PERMISSION_GRANTED;
+
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    // user rejected the permission
+                    boolean showRationale = shouldShowRequestPermissionRationale(permission);
+                    if (!showRationale) {
+                        //execute when 'never Ask Again' tick and permission dialog not show
+                    } else {
+                        if (openDialogOnce) {
+                            alertView();
+                        }
+                    }
+                }
+            }
+
+            if (isPermitted)
+                if (isPermissionFromGallery)
+                    openGalleryFragment();
+        }
+    }
+     */
+
+    private void alertView() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+        dialog.setTitle("Permission Denied")
+                //.setInverseBackgroundForced(true)
+                //.setIcon(R.drawable.ic_info_black_24dp)
+                .setMessage("Without this permission the app is unable to award prizes.")
+
+                .setNegativeButton("I'M SURE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+                        dialoginterface.dismiss();
+                    }
+                })
+                .setPositiveButton("RE-TRY", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+                        dialoginterface.dismiss();
+                        checkRunTimePermission();
+
+                    }
+                }).show();
+    }
+
 
         /**
          * Sets up the location request. Android has two location request settings:
@@ -444,30 +528,43 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
                     });
         }
 
-        @Override
-        public void onResume() {
-            super.onResume();
-            // Within {@code onPause()}, we remove location updates. Here, we resume receiving
-            // location updates if the user has requested them.
-            /*
-            if (mRequestingLocationUpdates && checkPermissions()) {
-                startLocationUpdates();
-            } else if (!checkPermissions()) {
-                requestPermissions();
-            }
-            */
-            //startLocationUpdates();
 
-            if (!checkPermissions()) {
-                requestPermissions();
-            }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermissions() {
+        PermissionUtil.checkPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION,
+                new PermissionUtil.PermissionAskListener() {
+                    @Override
+                    public void onPermissionAsk() {
+                        ActivityCompat.requestPermissions(
+                                FusedLocationActivity.this,
+                                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                                MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION
+                        );
+                    }
+                    @Override
+                    public void onPermissionPreviouslyDenied() {
+                        //show a dialog explaining permission and then request permission
+                        requestPermissions();
+                    }
+                    @Override
+                    public void onPermissionDisabled() {
+                        sendToastMessage("Permission Disabled");
+                    }
+                    @Override
+                    public void onPermissionGranted() {
+                        getLocation();
+                        //readContacts();
+                        //startLocationUpdates(); //for now, may not actually need this
+                    }
+                });
+        }
 
-
+        private void getLocation() {
             mFusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
                     myLatitude = location.getLatitude();
                     myLongitude = location.getLongitude();
-                    System.out.println("My latitude: "+ myLatitude + " my Longitude: " + myLongitude);
+                    System.out.println("My latitude: " + myLatitude + " my Longitude: " + myLongitude);
                     WillyShmoApplication.setLatitude(myLatitude);
                     WillyShmoApplication.setLongitude(myLongitude);
 
@@ -476,16 +573,18 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
 
                 }
             });
-            //updateUI();
+        }
 
-
+        @Override
+        public void onResume() {
+            super.onResume();
         }
 
         @Override
         protected void onPause() {
             super.onPause();
             // Remove location updates to save battery.
-            stopLocationUpdates();
+            //stopLocationUpdates();
         }
 
         /**
@@ -524,11 +623,12 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
         /**
          * Return the current state of the permissions needed.
          */
-        private boolean checkPermissions() {
+        private boolean checkPermissionsOrig() {
             int permissionState = ActivityCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION);
             return permissionState == PackageManager.PERMISSION_GRANTED;
         }
+
 
         private void requestPermissions() {
             boolean shouldProvideRationale =
@@ -575,7 +675,7 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
                 } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (mRequestingLocationUpdates) {
                         Log.i(TAG, "Permission granted, updates requested, starting location updates");
-                        startLocationUpdates();
+                        //startLocationUpdates();
                     }
                 } else {
                     // Permission denied.
@@ -589,24 +689,34 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
                     // again" prompts). Therefore, a user interface affordance is typically implemented
                     // when permissions are denied. Otherwise, your app could appear unresponsive to
                     // touches or interactions which have required permissions.
-                    showSnackbar(R.string.permission_denied_explanation,
-                            R.string.settings, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    // Build intent that displays the App settings screen.
-                                    Intent intent = new Intent();
-                                    intent.setAction(
-                                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                    Uri uri = Uri.fromParts("package",
-                                            BuildConfig.APPLICATION_ID, null);
-                                    intent.setData(uri);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
-                                }
-                            });
+
+                    showSnackbar(R.string.permission_denied_explanation);
                 }
             }
         }
+
+
+        private void showSnackbar(int displayStringResource) {
+            showSnackbar(displayStringResource,
+                    R.string.settings, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Build intent that displays the App settings screen.
+                            Intent intent = new Intent();
+                            intent.setAction(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package",
+                                    BuildConfig.APPLICATION_ID, null);
+                            intent.setData(uri);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    });
+
+
+        }
+
+
 
     private class ErrorHandler extends Handler {
         @Override

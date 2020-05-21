@@ -1,11 +1,14 @@
 package com.guzzardo.android.willyshmo.tictactoe4;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -27,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 
 import static com.guzzardo.android.willyshmo.tictactoe4.WillyShmoApplication.getWillyShmoApplicationContext;
@@ -50,6 +54,8 @@ public class SplashScreen extends Activity implements ToastMessage {
     final int SOMETHING_ACTION = 0;
     final int SOMETHING_ELSE_ACTION = 1;
     String MSG_KEY = "message key";
+
+    boolean isPermitted = false;
 
 
     /**
