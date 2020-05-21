@@ -43,7 +43,8 @@ public class WillyShmoApplication extends MultiDexApplication /* implements Conn
 
     private static HashMap<String, String> mConfigMap;
     
-    private static double mLongitude, mLatitude;
+    private static double mLongitude;
+    private static double mLatitude;
     private static boolean mNetworkAvailable; 
     private static LocationListener mLocationListener;  
     private static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 1;

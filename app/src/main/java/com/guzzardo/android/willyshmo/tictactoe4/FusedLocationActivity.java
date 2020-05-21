@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -457,6 +458,11 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
             */
             //startLocationUpdates();
 
+            if (!checkPermissions()) {
+                requestPermissions();
+            }
+
+
             mFusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
                     myLatitude = location.getLatitude();
@@ -505,7 +511,14 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
                     findViewById(android.R.id.content),
                     getString(mainTextStringId),
                     Snackbar.LENGTH_INDEFINITE)
+                    .setBackgroundTint(Color.WHITE)
+                    .setActionTextColor(Color.BLACK)
                     .setAction(getString(actionStringId), listener).show();
+
+            View snackBarView = findViewById(android.R.id.content);
+            //snackBarView.setBackgroundColor(Color.GREEN);
+
+
         }
 
         /**

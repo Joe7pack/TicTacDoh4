@@ -122,7 +122,7 @@
     <string name="latitude_label">Latitude</string>
 	<string name="longitude_label">Longitude</string>
 	<string name="last_update_time_label">Last updated at</string>
-	<string name="permission_rationale">to protect your privacy</string>
+	<string name="permission_rationale">To win prizes we would like to know your location</string>
 	<string name="permission_denied_explanation">permission denied</string>
 	<string name="start_updates">location updates started</string>
 	<string name="stop_updates">location updates stopped</string>
