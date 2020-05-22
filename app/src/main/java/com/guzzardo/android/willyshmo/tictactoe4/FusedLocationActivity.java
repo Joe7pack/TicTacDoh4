@@ -206,7 +206,6 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
 
             //checkRunTimePermission();
 
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 checkPermissions();
             } else {
@@ -548,6 +547,7 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
                     }
                     @Override
                     public void onPermissionDisabled() {
+                        //TODO - may want to call requestPermissions() again?
                         sendToastMessage("Permission Disabled");
                     }
                     @Override
@@ -616,8 +616,6 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
 
             View snackBarView = findViewById(android.R.id.content);
             //snackBarView.setBackgroundColor(Color.GREEN);
-
-
         }
 
         /**
@@ -628,7 +626,6 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
                     Manifest.permission.ACCESS_COARSE_LOCATION);
             return permissionState == PackageManager.PERMISSION_GRANTED;
         }
-
 
         private void requestPermissions() {
             boolean shouldProvideRationale =
@@ -712,11 +709,7 @@ public class FusedLocationActivity  extends Activity implements ToastMessage {
                             startActivity(intent);
                         }
                     });
-
-
         }
-
-
 
     private class ErrorHandler extends Handler {
         @Override

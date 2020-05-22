@@ -6,7 +6,7 @@ android {
     //buildToolsVersion "28-rc2"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
-        minSdkVersion 3
+        minSdkVersion 4
         targetSdkVersion 28
     }
     buildTypes {
