@@ -8,16 +8,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.support.constraint.ConstraintLayout;
+import android.text.Layout;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +65,7 @@ public class SplashScreen extends Activity implements ToastMessage {
     String MSG_KEY = "message key";
 
     boolean isPermitted = false;
+    TextView waitText;
 
 
     /**
@@ -119,29 +129,80 @@ public class SplashScreen extends Activity implements ToastMessage {
             //mSkipWaitCheck = true;
         }
 
+
         Context willyShmoApplicationContext = getWillyShmoApplicationContext();
+
         Intent myIntent = new Intent(willyShmoApplicationContext, FusedLocationActivity.class);
         startActivity(myIntent);
 
 
+
+         // original code replaced with FusedLocationActivity above
         //Intent myIntent = new Intent(willyShmoApplicationContext, MainActivity.class);
         //startActivity(myIntent);
         //finish();
 
+
         /*
-
-        pgsBar = (ProgressBar) findViewById(R.id.pBar);
-
-        Button btn = (Button)findViewById(R.id.btnShow);
-        txtView = (TextView) findViewById(R.id.textView);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // handleButtonClick(v);
-            }
-        });
+        WindowManager wm = (WindowManager) this.getSystemService(willyShmoApplicationContext.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        int heightInDp = Math.round(metrics.heightPixels / (metrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         */
+
+        View thisView = findViewById(android.R.id.content).getRootView();
+        thisView.measure(0,0);
+        int thisViewHeight = thisView.getMeasuredHeight();
+
+        /*
+        DisplayMetrics displayMetrics = willyShmoApplicationContext.getResources().getDisplayMetrics();
+        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int heightInDp = Math.round(dpHeight);
+        */
+
+        TextView waitTextArea = findViewById(R.id.waitText);
+        waitTextArea.measure(0, 0);
+        int waitTextMeasuredHeight = waitTextArea.getMeasuredHeight();
+
+
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.measure(0, 0);
+        int progressBarMeasuredHeight = progressBar.getMeasuredHeight();
+
+        //pgsBar = (ProgressBar) findViewById(R.id.pBar);
+        //pgsBar.measure(0, 0);
+        //int pgsBarMeasuredHeight = pgsBar.getMeasuredHeight(); // in pixels?
+
+        //Object waitTextObj = waitText.getLayout();
+
+        Layout myLayout = waitTextArea.getLayout();
+        int myHeight = myLayout.getHeight();
+
+
+
+        //int topMargin = params.topMargin;
+        //int bottomMargin = params.bottomMargin;
+        //int leftMargin = params.leftMargin;
+        //int rightMargin = params.rightMargin;
+        int topMargin = thisViewHeight - (waitTextMeasuredHeight + progressBarMeasuredHeight);
+
+
+
+        //Object obj = waitText.getLayoutParams();
+
+
+
+        //ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)waitTextArea.getLayoutParams();
+
+//        ConstraintLayout.LayoutParams newLayoutParams = (ConstraintLayout.LayoutParams) toolbar.getLayoutParams();
+        //params.setMargins(0, topMargin, 0, 0); //substitute parameters for left, top, right, bottom
+        //waitTextArea.setLayoutParams(params);
+
+
         //startMyThread();
     }
 
@@ -191,6 +252,10 @@ public class SplashScreen extends Activity implements ToastMessage {
     @Override
     public void onStart() {
         super.onStart();
+
+       // waitText.setTextColor(Color.RED);
+
+
         GetConfigurationValuesFromDB getConfigurationValuesFromDB = new GetConfigurationValuesFromDB();
         getConfigurationValuesFromDB.execute(this, getApplicationContext(), getResources());
 

@@ -72,6 +72,8 @@ dependencies {
     implementation files('libs/jackson-core-2.11.0.jar')
     implementation files('libs/jackson-databind-2.11.0.jar')
     implementation project(':license')
+
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

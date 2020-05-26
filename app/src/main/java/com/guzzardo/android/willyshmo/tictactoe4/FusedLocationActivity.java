@@ -1,10 +1,5 @@
 package com.guzzardo.android.willyshmo.tictactoe4;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -23,26 +18,23 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings;
-//import android.support.annotation.NonNull;
-//import android.support.design.widget.Snackbar;
-//import android.support.v4.app.ActivityCompat;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.multidex.BuildConfig;
-//import android.support.v7.app.AppCompatActivity;
-//import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.multidex.BuildConfig;
+import androidx.appcompat.app.AlertDialog;
+
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
@@ -52,13 +44,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-
-import org.xml.sax.ErrorHandler;
-
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Locale;
-
 
 public class FusedLocationActivity  extends Activity implements ToastMessage {
     /**
